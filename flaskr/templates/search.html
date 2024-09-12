@@ -1,0 +1,24 @@
+<!-- templates/search.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Search for Folders</h1>
+<form method="POST">
+    <label for="keyword">Keyword:</label>
+    <input type="text" id="keyword" name="keyword" required><br>
+    <label for="target_brick_count">Target Unique Brick Count:</label>
+    <input type="number" id="target_brick_count" name="target_brick_count" required><br>
+    <label for="target_red_brick_count">Target Red Brick Count:</label>
+    <input type="number" id="target_red_brick_count" name="target_red_brick_count" required><br>
+    <button type="submit">Search</button>
+</form>
+
+{% if matching_folders is not none %}
+    <h2>Matching Folders:</h2>
+    <ul>
+        {% for folder in matching_folders %}
+            <li>{{ folder }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+{% endblock %}

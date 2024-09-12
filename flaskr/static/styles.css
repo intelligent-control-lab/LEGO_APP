@@ -1,0 +1,91 @@
+/* static/styles.css */
+
+/* Existing styles */
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
+}
+
+nav {
+    background-color: #343a40;
+    color: #fff;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+nav .title{
+    font-size: 38px;
+    color:rgb(198, 132, 132);
+    font-family: Cambria;
+}
+nav h1 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    padding: 0;
+    margin: 0;
+}
+
+nav ul li {
+    margin-right: 10px;
+}
+
+nav ul li a {
+    color: #5d0505;
+    text-decoration: none;
+    padding: 5px 10px;
+    border: 2px solid transparent;
+    border-radius: 5px;
+    background-color: #ffffff; /* Change this to your desired button color */
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+nav ul li a:hover {
+    background-color: #0056b3; /* Updated hover background color */
+    border-color: #0056b3;     /* Updated hover border color */
+}
+
+nav .title {
+    text-align: center;
+    flex-grow: 1;
+}
+
+/* Other existing styles */
+
+.container {
+    padding: 20px;
+}
+
+h1 {
+    color: #343a40;
+}
+
+form label {
+    display: block;
+    margin-top: 10px;
+}
+
+form input, form button {
+    margin-top: 5px;
+    padding: 5px;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+ul li {
+    background-color: #e9ecef;
+    margin: 5px 0;
+    padding: 10px;
+    border-radius: 5px;
+}
