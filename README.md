@@ -1,2 +1,6 @@
 # LEGO_APP
-The start the application, run the command "flask --app flaskr run --debug -p 8000". Once the application is up and running, enter a keyword to search for an object that is within the bounds of the models given. For instance typing "Airplane" will return all models of airplanes. You can additionally enter a "target unit brick count" which will return models of objects that have at most the number of lego bricks you entered. For instance if you type 300, and your chosen model is an airplane, it will return a list of different airplanes who a number of lego bricks equal and up to 300 or less. Lastly, entering the "target red brick count" returns a list of objects that have at most the user-entered number of red lego bricks. Having 0 lego bricks is ideal as it means the full object has 100% structural integrity while having any more red bricks reduced that.
+This is a search engine that recommends Lego designs according to the user specifications.
+
+## Execution
+1. `flask --app flaskr run --debug -p 8000`
+2. Open a browser and go to `localhost:8000`.
