@@ -2,23 +2,52 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Search for Folders</h1>
+
+<h1>What Lego do you want?</h1>
 <form method="POST">
-    <label for="keyword">Keyword:</label>
-    <input type="text" id="keyword" name="keyword" required><br>
-    <label for="target_brick_count">Target Unique Brick Count:</label>
-    <input type="number" id="target_brick_count" name="target_brick_count" required><br>
-    <label for="target_red_brick_count">Target Red Brick Count:</label>
-    <input type="number" id="target_red_brick_count" name="target_red_brick_count" required><br>
-    <button type="submit">Search</button>
+    <label for="Lego">Choose a Lego:</label>
+    <select name="Build Lego" id="Lego">
+        <option value="Heart">Heart</option>
+        <option value="Man">Man</option>
+        <option value="Chair">Chair</option>
+        <option value="Table">Table</option>
+        <option value="MFI">MFI</option>
+        <option value="Gate">Gate</option>
+    </select>
+    <input type="submit" name="Preview" value="Preview" />
+    <input type="submit" name="Build" value="Build" />
 </form>
 
-{% if matching_folders is not none %}
-    <h2>Matching Folders:</h2>
+{% if build_folders is not none %}
     <ul>
-        {% for folder in matching_folders %}
-            <li>{{ folder }}</li>
+        {% for folder in build_folders %}
+        <td style="padding:2.5%;width:25%;vertical-align:middle;min-width:100px"></td>
+            <img src="{{folder.img_dir}}" alt="project image" style="width:auto; height:auto; max-width:20%;" />
+          </td>
         {% endfor %}
     </ul>
 {% endif %}
+
+
+<h2>More Designs</h2>
+<form method="POST">
+    <label for="keyword">Keyword:</label>
+    <input type="text" id="keyword" name="keyword" required><br>
+    <label for="target_brick_count">Number of Bricks:</label>
+    <input type="number" id="target_brick_count" name="target_brick_count" required><br>
+    <button type="submit">Brainstorm</button>
+</form>
+
+
+{% if matching_folders is not none %}
+    <h2>Lego Designs:</h2>
+    <ul>
+        {% for folder in matching_folders %}
+        <td style="padding:2.5%;width:25%;vertical-align:middle;min-width:100px"></td>
+            <img src="{{folder.img_dir}}" alt="project image" style="width:auto; height:auto; max-width:18%;" />
+          </td>
+        {% endfor %}
+    </ul>
+{% endif %}
+
 {% endblock %}
