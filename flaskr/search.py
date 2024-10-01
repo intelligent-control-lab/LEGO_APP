@@ -9,6 +9,7 @@ import time
 import random
 import shutil
 from flask import Blueprint, render_template, request, flash
+import spacy
 
 bp = Blueprint('search', __name__)
 matching_folders = None
@@ -95,39 +96,48 @@ def search():
             target_red_brick_count = 0
 
             python_dict = {
-                'Airplane': '02691156',
-                'Trash_Can': '02747177',
-                'Bag': '02773838',
-                'Bin': '02801938',
-                'Tub': '02808440',
-                'Bed': '02818832',
-                'Bench': '02828884',
-                'Hut': '02843684',
-                'Bookshelf': '02871439',
-                'Bottle': '02876657',
-                'Bowl': '02880940',
-                'Bus': '02924116',
-                'Drawer': '02933112',
-                'Camera': '02942699',
-                'Can': '02946921',
-                'Hat': '02954340',
-                'Car': '02958343',
-                'Chair': '03001627',
-                'Clock': '03046257',
-                'Speaker': '03691459',
-                'Table': '04379243',
-                'Phone': '04401088',
-                'Tower': '04460130',
-                'Train': '04468005',
-                'Boat': '04530566',
-                'Washing_Machine': '04554684'
+                'airplane': '02691156',
+                'trash can': '02747177',
+                'bag': '02773838',
+                'bin': '02801938',
+                'tub': '02808440',
+                'bed': '02818832',
+                'bench': '02828884',
+                'hut': '02843684',
+                'bookshelf': '02871439',
+                'bottle': '02876657',
+                'bowl': '02880940',
+                'bus': '02924116',
+                'drawer': '02933112',
+                'camera': '02942699',
+                'can': '02946921',
+                'hat': '02954340',
+                'car': '02958343',
+                'chair': '03001627',
+                'clock': '03046257',
+                'speaker': '03691459',
+                'table': '04379243',
+                'phone': '04401088',
+                'tower': '04460130',
+                'train': '04468005',
+                'boat': '04530566',
+                'washing machine': '04554684'
             }
             
             # Find the closest match to the keyword
-            closest_matches = difflib.get_close_matches(keyword, python_dict.keys(), n=1, cutoff=0.6)
+            # closest_matches = difflib.get_close_matches(keyword, python_dict.keys(), n=1, cutoff=0.6)
+
+            nlp = spacy.load("en_core_web_lg") # python3 -m spacy download en_core_web_lg
+            max_score = 0
+            keyword_tokens = nlp(keyword)
+            for k in python_dict.keys():
+                tmp_tokens = nlp(k)
+                sim = keyword_tokens.similarity(tmp_tokens)
+                if(sim > max_score):
+                    max_score = sim
+                    closest_keyword = k
             print("Input keyword:", keyword)
-            if closest_matches:
-                closest_keyword = closest_matches[0]
+            if 1:#closest_matches:
                 print("Interpreted keyword:", closest_keyword)
                 folder_id = python_dict.get(closest_keyword)
                 if folder_id:
