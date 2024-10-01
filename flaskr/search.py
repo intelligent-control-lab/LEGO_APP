@@ -103,7 +103,7 @@ def search():
                 if("Preview" in request.form):
                     pass
                 elif("Build" in request.form):
-                    print("Build", request_obj)
+                    
                     if(request_obj == "Human"):
                         assembly_task = 0
                     elif(request_obj == "Heart"):
@@ -118,10 +118,24 @@ def search():
                         assembly_task = 5
                     start_task = 1
                     task_type = 1
+                    print("Build", request_obj, assembly_task)
                 elif("Disassemble" in request.form):
-                    print("Disassemble", request_obj, assembly_task)
+                    
+                    if(request_obj == "Human"):
+                        assembly_task = 0
+                    elif(request_obj == "Heart"):
+                        assembly_task = 1
+                    elif(request_obj == "Gate"):
+                        assembly_task = 2
+                    elif(request_obj == "Chair"):
+                        assembly_task = 3
+                    elif(request_obj == "MFI"):
+                        assembly_task = 4
+                    elif(request_obj == "Table"):
+                        assembly_task = 5
                     start_task = 1
                     task_type = 0
+                    print("Disassemble", request_obj, assembly_task)
         else:
             matching_folders = None
             keyword = request.form.get('keyword')
@@ -179,9 +193,10 @@ def search():
     while(cnt < 5):
         assembly_task_pub.publish(assembly_task)
         task_type_pub.publish(task_type)
-        start_task_pub.publish(start_task)
         cnt += 1
-        time.sleep(0.05)
+        time.sleep(0.1)
+        
+    start_task_pub.publish(start_task)
     time.sleep(0.5)
     start_task_pub.publish(0)
 
