@@ -10,9 +10,14 @@ import random
 import shutil
 from flask import Blueprint, render_template, request, flash
 
+import rospy
+from std_msgs.msg import Int64
+
 bp = Blueprint('search', __name__)
 matching_folders = None
 build_folders = None
+assembly_task = 0
+request_obj = "Heart"
 
 def count_unique_brick_ids(task_graph_path):
     try:
@@ -75,7 +80,16 @@ def find_matching_folders(base_dir, folder_id, target_brick_count, target_red_br
 def search():
     global matching_folders
     global build_folders
-    base_dir = '/home/ruixuan/StableLegoData/'  # Define base_dir here
+    global assembly_task # 0:human, 1: heart, 2:gate, 3: chair, 4:mfi, 5:table
+    global request_obj
+
+    start_task_pub = rospy.Publisher('/yk_destroyer/start_task', Int64, queue_size=1)
+    assembly_task_pub = rospy.Publisher('/yk_destroyer/assembly_task', Int64, queue_size=1)
+    task_type_pub = rospy.Publisher('/yk_destroyer/task_type', Int64, queue_size=1)
+    base_dir = '/home/mfi/repos/ros1_ws/src/ruixuan/StableLegoData/'  # Define base_dir here
+
+    start_task = 0 # 1: executing 0: idle
+    task_type = 1 # 1: assemble, 0: disassemble
 
     if request.method == 'POST':
         if("Build Lego" in request.form):
@@ -88,6 +102,24 @@ def search():
                 pass
             elif("Build" in request.form):
                 print("Build", request_obj)
+                if(request_obj == "Man"):
+                    assembly_task = 0
+                elif(request_obj == "Heart"):
+                    assembly_task = 1
+                elif(request_obj == "Gate"):
+                    assembly_task = 2
+                elif(request_obj == "Chair"):
+                    assembly_task = 3
+                elif(request_obj == "MFI"):
+                    assembly_task = 4
+                elif(request_obj == "Table"):
+                    assembly_task = 5
+                start_task = 1
+                task_type = 1
+            elif("Disassemble" in request.form):
+                print("Disassemble", request_obj, assembly_task)
+                start_task = 1
+                task_type = 0
         else:
             matching_folders = None
             keyword = request.form.get('keyword')
@@ -135,4 +167,11 @@ def search():
             else:
                 print("No available designs!")
                 flash('Keyword not found in the dictionary.')
+    
+    assembly_task_pub.publish(assembly_task)
+    task_type_pub.publish(task_type)
+    start_task_pub.publish(start_task)
+    time.sleep(0.5)
+    start_task_pub.publish(0)
+
     return render_template('search.html', matching_folders=matching_folders, build_folders=build_folders)
