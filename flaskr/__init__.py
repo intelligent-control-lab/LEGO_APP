@@ -42,6 +42,7 @@
 # __init__.py
 import os
 from flask import Flask
+import rospy
 
 def create_app(test_config=None):
     # create and configure the app
@@ -63,6 +64,8 @@ def create_app(test_config=None):
         os.makedirs(app.instance_path)
     except OSError:
         pass
+
+    rospy.init_node('web_node', anonymous=True)
 
     # a simple page that says hello
     @app.route('/hello')

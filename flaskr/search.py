@@ -95,32 +95,33 @@ def search():
     if request.method == 'POST':
         if("Build Lego" in request.form):
             request_obj = request.form.get("Build Lego")
-            obj_dir = base_dir + "robot_tasks/" + request_obj
-            shutil.copy(obj_dir + "/task_graph.json", "./flaskr/static/robot_tasks/task_graph.json")
-            shutil.copy(obj_dir + "/vis.png", "./flaskr/static/robot_tasks/vis.png")
-            build_folders = [{"dir": obj_dir, "img_dir": '/static/robot_tasks/vis.png'}]
-            if("Preview" in request.form):
-                pass
-            elif("Build" in request.form):
-                print("Build", request_obj)
-                if(request_obj == "Man"):
-                    assembly_task = 0
-                elif(request_obj == "Heart"):
-                    assembly_task = 1
-                elif(request_obj == "Gate"):
-                    assembly_task = 2
-                elif(request_obj == "Chair"):
-                    assembly_task = 3
-                elif(request_obj == "MFI"):
-                    assembly_task = 4
-                elif(request_obj == "Table"):
-                    assembly_task = 5
-                start_task = 1
-                task_type = 1
-            elif("Disassemble" in request.form):
-                print("Disassemble", request_obj, assembly_task)
-                start_task = 1
-                task_type = 0
+            if(request_obj != "Choose"):
+                obj_dir = base_dir + "robot_tasks/" + request_obj
+                shutil.copy(obj_dir + "/task_graph.json", "./flaskr/static/robot_tasks/task_graph.json")
+                shutil.copy(obj_dir + "/vis.png", "./flaskr/static/robot_tasks/vis.png")
+                build_folders = [{"dir": obj_dir, "img_dir": '/static/robot_tasks/vis.png'}]
+                if("Preview" in request.form):
+                    pass
+                elif("Build" in request.form):
+                    print("Build", request_obj)
+                    if(request_obj == "Human"):
+                        assembly_task = 0
+                    elif(request_obj == "Heart"):
+                        assembly_task = 1
+                    elif(request_obj == "Gate"):
+                        assembly_task = 2
+                    elif(request_obj == "Chair"):
+                        assembly_task = 3
+                    elif(request_obj == "MFI"):
+                        assembly_task = 4
+                    elif(request_obj == "Table"):
+                        assembly_task = 5
+                    start_task = 1
+                    task_type = 1
+                elif("Disassemble" in request.form):
+                    print("Disassemble", request_obj, assembly_task)
+                    start_task = 1
+                    task_type = 0
         else:
             matching_folders = None
             keyword = request.form.get('keyword')
@@ -169,18 +170,18 @@ def search():
                     max_score = sim
                     closest_keyword = k
             print("Input keyword:", keyword)
-            if 1:#closest_matches:
-                print("Interpreted keyword:", closest_keyword)
-                folder_id = python_dict.get(closest_keyword)
-                if folder_id:
-                    matching_folders = find_matching_folders(base_dir, folder_id, target_brick_count, target_red_brick_count)
-            else:
-                print("No available designs!")
-                flash('Keyword not found in the dictionary.')
+            print("Interpreted keyword:", closest_keyword)
+            folder_id = python_dict.get(closest_keyword)
+            if folder_id:
+                matching_folders = find_matching_folders(base_dir, folder_id, target_brick_count, target_red_brick_count)
     
-    assembly_task_pub.publish(assembly_task)
-    task_type_pub.publish(task_type)
-    start_task_pub.publish(start_task)
+    cnt = 0
+    while(cnt < 5):
+        assembly_task_pub.publish(assembly_task)
+        task_type_pub.publish(task_type)
+        start_task_pub.publish(start_task)
+        cnt += 1
+        time.sleep(0.05)
     time.sleep(0.5)
     start_task_pub.publish(0)
 

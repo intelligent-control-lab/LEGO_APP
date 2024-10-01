@@ -3,19 +3,21 @@
 
 {% block content %}
 
-<h1>What Lego do you want?</h1>
+<h1>What LEGO design you want?</h1>
 <form method="POST">
     <label for="Lego">Choose a Lego:</label>
     <select name="Build Lego" id="Lego">
+        <option value="Choose">Choose</option>
         <option value="Heart">Heart</option>
-        <option value="Man">Man</option>
+        <option value="Man">Human</option>
         <option value="Chair">Chair</option>
         <option value="Table">Table</option>
         <option value="MFI">MFI</option>
-        <option value="Gate">Gate</option>
+        <option value="Gate">Bridge</option>
     </select>
     <input type="submit" name="Preview" value="Preview" />
     <input type="submit" name="Build" value="Build" />
+    <input type="submit" name="Disassemble" value="Disassemble" />
 </form>
 
 {% if build_folders is not none %}
